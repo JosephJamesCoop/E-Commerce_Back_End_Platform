@@ -1,21 +1,17 @@
-const router = require("express").Router();
-const { Tag, Product, ProductTag } = require("../../models");
+const router = require('express').Router();
+const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   Tag.findAll({
-    attributes: ["id", "tag_name"],
-    order: [["tag_name", "DESC"]],
+    attributes: ['id', 'tag_name'],
+    order: [['tag_name', 'DESC']],
     // be sure to include its associated Category and Tag data
     include: [
       {
-        model: ProductTag,
-        attributes: ["peoduct_id", "tag_id"],
-      },
-      {
         model: Product,
-        attributes: ["id", "product_name", "price", "stock", "category_id"],
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
       },
     ],
   })
@@ -26,19 +22,18 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
-  Tag.findone({
-    attributes: ["id", "tag_name"],
-    order: [["tag_name", "DESC"]],
+router.get('/:id', (req, res) => {
+  Tag.findOne({
+    where: {
+      id: req.params.id
+    },
+    attributes: ['id', 'tag_name'],
+    order: [['tag_name', 'DESC']],
     // be sure to include its associated Category and Tag data
     include: [
       {
-        model: ProductTag,
-        attributes: ["peoduct_id", "tag_id"],
-      },
-      {
         model: Product,
-        attributes: ["id", "product_name", "price", "stock", "category_id"],
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
       },
     ],
   })
@@ -49,7 +44,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post('/', (req, res) => {
   Tag.create({
     tag_name: req.body.tag_name,
   })
@@ -74,7 +69,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put('/:id', (req, res) => {
   // update product data
   Tag.update(req.body, {
     where: {
@@ -115,7 +110,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
    // delete one Tag by its `id` value
    Tag.destroy({
     where: {
